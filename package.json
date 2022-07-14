@@ -9,10 +9,12 @@
     "ag-grid-community": "^28.0.2",
     "ag-grid-react": "^28.0.0",
     "antd": "^4.21.6",
+    "axios": "^0.27.2",
     "react": "^18.2.0",
     "react-context-api": "^1.0.2",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "react-toastify": "^9.0.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

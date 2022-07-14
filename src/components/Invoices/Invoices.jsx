@@ -1,26 +1,27 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useState, useContext } from "react";
 
 import GridListInvoices from "../GridListInvoices/GridListInvoices";
 import AddInvoice from "../AddInvoices/AddInvoice";
-import DataFake from "../../DataFake";
 
 const Invoices = () => {
-  const [rowData, setRowdata] = useState(DataFake);
-  const gridRef = useRef();
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const onRemove = useCallback(() => {
-    const selectedInvoice = gridRef.current.api.getSelectedInvoices();
-    const selectedIds = selectedInvoice.map((invoice) => invoice.data.id);
-    const invoices = DataFake.filter(
-      (invoice) => selectedIds.indexOd(DataFake.id) < 0
-    );
-    setRowdata(invoices);
-  });
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   return (
     <div className="Invoice_container">
-      <AddInvoice />
-      <GridListInvoices onRemove={onRemove} />
+      <AddInvoice
+        showModal={showModal}
+        handleCancel={handleCancel}
+        isModalVisible={isModalVisible}
+      />
+      <GridListInvoices showModal={showModal} />
     </div>
   );
 };
