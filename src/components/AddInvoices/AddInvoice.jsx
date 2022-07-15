@@ -1,16 +1,25 @@
 import React, { useState, useContext, useEffect } from "react";
-import AddInoviceModal from "./AddInvoiceModal";
+import AddInvoiceModal from "./AddInvoiceModal";
 import "antd/dist/antd.css";
 import "../AddInvoices/AddInvoice.css";
 
+import { Link } from "react-router-dom";
 import InvoiceContext from "../../InvoiceContext";
-import api from "../../api/invoicesapi";
+import { Button } from "antd";
 
 const url = "http://localhost:4000/invoices";
 
-const AddInvoice = ({ showModal, handleCancel, isModalVisible }) => {
+const AddInvoice = ({
+  initialData,
+  setInitialData,
+  showModal,
+  handleCancel,
+  isModalVisible,
+}) => {
   const { invoiceValue } = useContext(InvoiceContext);
   const [key, setKey] = useState(false);
+
+  const isUpdate = initialData.id !== undefined;
 
   const initials = {
     number: "",
@@ -23,7 +32,6 @@ const AddInvoice = ({ showModal, handleCancel, isModalVisible }) => {
     amount: "",
   };
 
-  const [data, setData] = useState(initials);
   const [tableData, setTableData] = invoiceValue;
 
   const getInvoices = () => {
@@ -34,22 +42,37 @@ const AddInvoice = ({ showModal, handleCancel, isModalVisible }) => {
 
   const onChange = (obj, e) => {
     let test = obj;
-    setData((prev) => ({ ...prev, [test]: e }));
+    setInitialData((prev) => ({ ...prev, [test]: e }));
   };
   const handleSubmit = () => {
-    fetch(url, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-      .then((r) => r.json())
-      .then(() => {
-        getInvoices();
-      });
-    setKey((k) => !k);
-    setData(initials);
+    if (!isUpdate) {
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify(initialData),
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+        .then((r) => r.json())
+        .then(() => {
+          getInvoices();
+        });
+      setKey((k) => !k);
+    } else {
+      fetch(url + `/${initialData.id}`, {
+        method: "PUT",
+        body: JSON.stringify(initialData),
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+        .then((r) => r.json())
+        .then(() => {
+          getInvoices();
+        });
+      setKey((k) => !k);
+    }
+    setInitialData(initials);
     handleCancel();
   };
 
@@ -59,15 +82,35 @@ const AddInvoice = ({ showModal, handleCancel, isModalVisible }) => {
 
   return (
     <>
-      <div>
-        <AddInoviceModal
-          {...{ onChange, handleSubmit }}
-          InvoiceData={data}
-          key={key}
-          handleCancel={handleCancel}
-          showModal={showModal}
-          isModalVisible={isModalVisible}
-        />
+      <div className="buttonsBtn">
+        <div>
+          <Link to="/details">
+            <Button
+              style={{
+                width: "180px",
+                backgroundColor: "rgb(128, 126, 126)",
+                color: "white",
+                borderRadius: "15px",
+                marginLeft: "105px",
+                marginTop: "79px",
+                marginBottom: "10px",
+                position: "sticky",
+              }}
+            >
+              Invoices Client Details
+            </Button>
+          </Link>
+        </div>
+        <div>
+          <AddInvoiceModal
+            {...{ onChange, handleSubmit }}
+            InvoiceData={initialData}
+            key={key}
+            handleCancel={handleCancel}
+            showModal={showModal}
+            isModalVisible={isModalVisible}
+          />
+        </div>
       </div>
     </>
   );

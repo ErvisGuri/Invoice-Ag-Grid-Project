@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useMemo,
-  useRef,
-  useContext,
-  useEffect,
-} from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 
 import { Button } from "antd";
 
@@ -19,11 +13,10 @@ import { Modal } from "antd";
 //Importing InvoiceContext
 import InvoiceContext from "../../InvoiceContext";
 
-const GridListInvoices = ({ showModal }) => {
+const GridListInvoices = ({ setInitialData, showModal }) => {
   const { invoiceValue } = useContext(InvoiceContext);
   const url = "http://localhost:4000/invoices";
   const [tableData, setTableData] = invoiceValue;
-  const gridRef = useRef();
 
   useEffect(() => {
     getInvoices();
@@ -107,6 +100,12 @@ const GridListInvoices = ({ showModal }) => {
     },
   ];
 
+  const onGridReady = useCallback((params) => {
+    fetch("http://localhost:4000/invoices")
+      .then((resp) => resp.json())
+      .then((data) => setTableData(data));
+  }, []);
+
   const styleRow = (color) => {
     switch (color) {
       case "Pending":
@@ -120,8 +119,8 @@ const GridListInvoices = ({ showModal }) => {
     }
   };
 
-  const handleUpdate = (oldData) => {
-    setTableData(oldData);
+  const handleUpdate = (invoice) => {
+    setInitialData(invoice);
     showModal();
   };
 
@@ -130,7 +129,6 @@ const GridListInvoices = ({ showModal }) => {
       "Are you sure, you want to delete this row!",
       id
     );
-    console.log(confirm);
     if (confirm) {
       fetch(url + `/${id}`, {
         method: "DELETE",
@@ -164,9 +162,8 @@ const GridListInvoices = ({ showModal }) => {
         rowDragManaged={true}
         rowSelection="multiple"
         animateRows={true}
-        // groupIncludeFooter={true}
-        // groupIncludeTotalFooter={true}
         sideBar={"columns"}
+        onGridReady={onGridReady}
       />
       <div className="totalSum">{tableData?.length}</div>
     </div>

@@ -2,12 +2,12 @@
   "invoices": [
     {
       "id": 2,
-      "number": 20,
+      "number": "1",
       "type": "Fature Shitje nr-1",
       "client": "GjiroFarm",
       "status": "Unpaid",
       "description": "Krijimi i nje layout Ag-Grid",
-      "rate": 112.2,
+      "rate": "112",
       "date": "7/12/2022",
       "amount": 453
     },
@@ -116,17 +116,6 @@
       "type": "Fature Shitje nr-1",
       "client": "TiranaBank",
       "status": "Paid",
-      "description": "Krijimi i nje layout Ag-Grid",
-      "rate": 112.2,
-      "date": "7/12/2022",
-      "amount": 453
-    },
-    {
-      "id": 13,
-      "number": 20,
-      "type": "Fature Shitje nr-1",
-      "client": "Alumil",
-      "status": "Pending",
       "description": "Krijimi i nje layout Ag-Grid",
       "rate": 112.2,
       "date": "7/12/2022",

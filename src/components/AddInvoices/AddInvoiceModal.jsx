@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Select, Input, DatePicker, Modal, Space, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
@@ -19,7 +19,7 @@ const AddInvoiceModal = ({
     <div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <span
-          style={{ fontSize: "25px", marginLeft: "800px", marginTop: "40px" }}
+          style={{ fontSize: "25px", marginLeft: "570px", marginTop: "40px" }}
         >
           AG Grid Project
         </span>
@@ -29,7 +29,6 @@ const AddInvoiceModal = ({
             backgroundColor: "rgb(128, 126, 126)",
             color: "white",
             borderRadius: "15px",
-            marginLeft: "105px",
             marginBottom: "10px",
             position: "sticky",
             top: "270px",

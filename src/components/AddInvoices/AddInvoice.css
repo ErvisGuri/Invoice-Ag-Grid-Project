@@ -88,3 +88,9 @@
     margin-left: 455px;
 
 }
+
+.buttonsBtn {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
