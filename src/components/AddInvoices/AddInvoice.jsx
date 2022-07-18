@@ -92,7 +92,7 @@ const AddInvoice = ({
                 color: "white",
                 borderRadius: "15px",
                 marginLeft: "105px",
-                marginTop: "79px",
+                marginTop: "20px",
                 marginBottom: "10px",
                 position: "sticky",
               }}

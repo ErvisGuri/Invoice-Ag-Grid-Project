@@ -7,3 +7,28 @@
   --ag-even-row-background-color: rgb(177, 179, 179) !important;
   --ag-header-column-resize-handle-color: rgb(117, 117, 117) !important;
 }
+
+.amountDetails{
+  cursor: pointer;
+  padding: 7px;
+  border-radius: 7px;
+  background-color: green;
+}
+
+.totalSum {
+  width: 50px;
+  padding: 7px;
+  border-radius: 7px;
+  background-color: green; 
+  text-decoration: underline;
+}
+
+.totalAmount {
+  display: flex;
+  flex-direction: row;
+  width: 50px;
+  margin-top: 3px;
+  padding: 7px;
+  border-radius: 7px;
+  text-decoration: underline;
+}

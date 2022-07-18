@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Select, Input, DatePicker, Modal, Space, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 import "antd/dist/antd.css";
+
+import InvoiceContext from "../../InvoiceContext";
+import invoiceEditValue from "../../InvoiceContext";
 
 const AddInvoiceModal = ({
   InvoiceData,
@@ -12,23 +15,39 @@ const AddInvoiceModal = ({
   isModalVisible,
   handleCancel,
 }) => {
+  const initials = {
+    number: "",
+    type: "",
+    client: "",
+    description: "",
+    status: "",
+    rate: "",
+    date: "",
+    amount: "",
+  };
+
+  const { invoiceValue, invoiceEditValue } = useContext(InvoiceContext);
+  const [isEdit, setIsEdit] = invoiceEditValue;
+
   const { number, description, rate, amount, key } = InvoiceData;
   const { Option } = Select;
+
+  const handleUpdate = () => {
+    console.log("update");
+    setIsEdit(false);
+    showModal();
+  };
 
   return (
     <div>
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <span
-          style={{ fontSize: "25px", marginLeft: "570px", marginTop: "40px" }}
-        >
-          AG Grid Project
-        </span>
         <Button
           style={{
             width: "150px",
             backgroundColor: "rgb(128, 126, 126)",
             color: "white",
             borderRadius: "15px",
+            marginTop: "20px",
             marginBottom: "10px",
             position: "sticky",
             top: "270px",
@@ -44,7 +63,7 @@ const AddInvoiceModal = ({
         mask={true}
         maskStyle={{ backgroundColor: "rgb(213 213 213)" }}
         wrapclassName="addPostModal"
-        title="Create New Invoice"
+        title={isEdit ? "Update Invoice" : "Add Invoice"}
         visible={isModalVisible}
         onCancel={handleCancel}
         bodyStyle={{ height: "400px" }}

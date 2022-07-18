@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 
 import GridListInvoices from "../GridListInvoices/GridListInvoices";
 import AddInvoice from "../AddInvoices/AddInvoice";
+import RecordStatus from "../RecordStatus/RecordStatus";
 
 const Invoices = () => {
   const initials = {
@@ -27,8 +28,13 @@ const Invoices = () => {
   };
 
   return (
-    <div className="Invoice_container">
+    <div
+      className="Invoice_container"
+      style={{ backgroundColor: "rgba(219,219,219,0.767)" }}
+    >
       <div>
+        <RecordStatus />
+
         <AddInvoice
           initialData={initialData}
           setInitialData={setInitialData}

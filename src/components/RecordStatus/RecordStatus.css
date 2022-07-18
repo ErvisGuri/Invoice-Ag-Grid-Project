@@ -1,0 +1,68 @@
+.recordStatus_container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    gap: 15px;
+    background-color: rgba(219, 219, 219,0.767);
+}
+
+.recordNew {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 320px;
+    height: auto;
+    margin-top: 10px;
+    margin-left: 320px;
+    font-size: 25px;
+    background-color:  #fcd182;
+    border-radius: 10px;
+    cursor: pointer;
+
+}
+
+.recordPending{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 320px;
+    height: auto;
+    margin-top: 10px;
+    font-size: 30px;
+    background-color: #ffa500a3 ;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.recordPaid{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 320px;
+    height: auto;
+    margin-top: 10px;
+    font-size: 30px;
+    background-color:#1864079c;
+    border-radius: 10px;
+    cursor: pointer;
+
+}
+
+.recordUnpaid{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 320px;
+    height: auto;
+    margin-top: 10px;
+    font-size: 25px;
+    background-color:#ff00009c;
+    border-radius: 10px;
+    cursor: pointer;
+
+}
+
+.recordNumb {
+    font-size: 80px;
+}

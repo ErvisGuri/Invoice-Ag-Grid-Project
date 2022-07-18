@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useRef } from "react";
 
 import { Button } from "antd";
 
@@ -12,11 +12,15 @@ import { Modal } from "antd";
 
 //Importing InvoiceContext
 import InvoiceContext from "../../InvoiceContext";
+import { tab } from "@testing-library/user-event/dist/tab";
 
 const GridListInvoices = ({ setInitialData, showModal }) => {
-  const { invoiceValue } = useContext(InvoiceContext);
+  const { invoiceValue, invoiceEditValue } = useContext(InvoiceContext);
+  const gridRef = useRef();
+
   const url = "http://localhost:4000/invoices";
   const [tableData, setTableData] = invoiceValue;
+  const [isEdit, setIsEdit] = invoiceEditValue;
 
   useEffect(() => {
     getInvoices();
@@ -28,12 +32,12 @@ const GridListInvoices = ({ setInitialData, showModal }) => {
       .then((resp) => setTableData(resp));
   };
 
-  const numberFormatter = Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  });
-  const myValueFormatter = (p) => numberFormatter.format(p.value);
+  // const numberFormatter = Intl.NumberFormat("en-US", {
+  //   style: "currency",
+  //   currency: "USD",
+  //   maximumFractionDigits: 0,
+  // });
+  // const myValueFormatter = (p) => numberFormatter.format(p.value);
 
   const columDefs = [
     {
@@ -121,6 +125,7 @@ const GridListInvoices = ({ setInitialData, showModal }) => {
 
   const handleUpdate = (invoice) => {
     setInitialData(invoice);
+    setIsEdit(true);
     showModal();
   };
 
@@ -145,6 +150,10 @@ const GridListInvoices = ({ setInitialData, showModal }) => {
     resizable: true,
   };
 
+  const totalAmount = tableData
+    ?.map((el) => el.amount)
+    .reduce((a, b) => parseInt(a) + parseInt(b));
+
   return (
     <div
       className="ag-theme-alpine"
@@ -162,10 +171,27 @@ const GridListInvoices = ({ setInitialData, showModal }) => {
         rowDragManaged={true}
         rowSelection="multiple"
         animateRows={true}
+        pagination={true}
+        paginationPageSize={10}
         sideBar={"columns"}
         onGridReady={onGridReady}
       />
-      <div className="totalSum">{tableData?.length}</div>
+      <div className="totalAmount">
+        <div>
+          <span style={{ fontSize: "17px" }}>Total</span>
+        </div>
+        <div
+          style={{
+            marginLeft: "1368px",
+            backgroundColor: "green",
+            padding: "7px",
+            borderRadius: "7px",
+            fontSize: "17px",
+          }}
+        >
+          {totalAmount}
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,6 @@
+.detailsRow {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid gray;
+    border-radius: 7px;
+}

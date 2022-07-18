@@ -5,6 +5,7 @@ const InvoiceContext = createContext();
 
 export function InvoiceProvider({ children }) {
     const [tableData, setTableData] = useState(null);
+    const [isEdit, setIsEdit] = useState(false)
 
 
 
@@ -12,6 +13,7 @@ export function InvoiceProvider({ children }) {
         <InvoiceContext.Provider
             value={{
                 invoiceValue: [tableData, setTableData],
+                invoiceEditValue: [isEdit, setIsEdit]
             }}
         >
             {children}
