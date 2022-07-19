@@ -144,7 +144,6 @@ const GridListInvoices = ({ setInitialData, showModal }) => {
   };
 
   const defaultColDef = {
-    sortalbe: true,
     filter: true,
     floatingFilter: true,
     resizable: true,

@@ -9,7 +9,7 @@
       "description": "Krijimi i nje layout Ag-Grid",
       "rate": 112.2,
       "date": "7/12/2022",
-      "amount": 453
+      "amount": 4121
     },
     {
       "id": 4,
@@ -20,9 +20,10 @@
       "description": "Krijimi i nje layout Ag-Grid",
       "rate": 112.2,
       "date": "7/12/2022",
-      "amount": 453
+      "amount": 124
     },
     {
+
       "id": 5,
       "number": 20,
       "type": "Fature Shitje nr-1",
@@ -31,7 +32,7 @@
       "description": "Krijimi i nje layout Ag-Grid",
       "rate": 112.2,
       "date": "7/12/2022",
-      "amount": 453
+      "amount": 656
     },
     {
       "id": 6,
@@ -42,7 +43,7 @@
       "description": "Krijimi i nje layout Ag-Grid",
       "rate": 112.2,
       "date": "7/12/2022",
-      "amount": 453
+      "amount": 588
     },
     {
       "id": 4,

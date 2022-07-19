@@ -4,7 +4,7 @@ const InvoiceContext = createContext();
 
 
 export function InvoiceProvider({ children }) {
-    const [tableData, setTableData] = useState(null);
+    const [tableData, setTableData] = useState();
     const [isEdit, setIsEdit] = useState(false)
 
 

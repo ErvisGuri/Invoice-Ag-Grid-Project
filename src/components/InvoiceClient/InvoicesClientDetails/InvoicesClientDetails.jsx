@@ -12,9 +12,8 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
 import InvoiceContext from "../../../InvoiceContext";
-import { tab } from "@testing-library/user-event/dist/tab";
 
-const InvoicesClientDetails = () => {
+const InvoicesClientDetails = (props) => {
   const { invoiceValue } = useContext(InvoiceContext);
   const [tableData, setTableData] = invoiceValue;
   const [gridApi, setGridApi] = useState(null);
@@ -23,51 +22,51 @@ const InvoicesClientDetails = () => {
     return params.node ? params.node.rowIndex : null;
   };
 
-  const content = (client) => {
-    return (
-      <div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: "250px",
-            textDecoration: "underline",
-          }}
-        >
-          <h3 style={{ marginLeft: "5px" }}>ID</h3>
-          <h3>Amount</h3>
-        </div>
-        {tableData
-          .filter((e) => e.client === client)
-          .map((invoice, key) => (
-            <div
-              className="detailsRow"
-              key={key}
-              style={{ display: "flex", flexDirection: "row", gap: "6px" }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  marginLeft: "5px",
-                }}
-              >
-                {invoice.id}
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  marginLeft: "280px",
-                }}
-              >
-                {invoice.amount}
-              </div>
-            </div>
-          ))}
-      </div>
-    );
-  };
+  // const content = (client) => {
+  //   return (
+  //     <div>
+  //       <div
+  //         style={{
+  //           display: "flex",
+  //           flexDirection: "row",
+  //           gap: "250px",
+  //           textDecoration: "underline",
+  //         }}
+  //       >
+  //         <h3 style={{ marginLeft: "5px" }}>ID</h3>
+  //         <h3>Amount</h3>
+  //       </div>
+  //       {tableData
+  //         .filter((e) => e.client === client)
+  //         .map((invoice, key) => (
+  //           <div
+  //             className="detailsRow"
+  //             key={key}
+  //             style={{ display: "flex", flexDirection: "row", gap: "6px" }}
+  //           >
+  //             <div
+  //               style={{
+  //                 display: "flex",
+  //                 flexDirection: "column",
+  //                 marginLeft: "5px",
+  //               }}
+  //             >
+  //               {invoice.id}
+  //             </div>
+  //             <div
+  //               style={{
+  //                 display: "flex",
+  //                 flexDirection: "column",
+  //                 marginLeft: "280px",
+  //               }}
+  //             >
+  //               {invoice.amount}
+  //             </div>
+  //           </div>
+  //         ))}
+  //     </div>
+  //   );
+  // };
 
   const columDefs = [
     {
@@ -76,23 +75,16 @@ const InvoicesClientDetails = () => {
       checkboxSelection: true,
       headerCheckboxSelection: true,
       valueGetter: idValueGetter,
+      sortable: true,
+      sort: "asc",
     },
     { field: "client", headerName: "Client", filter: true },
     {
       field: "amount",
       headerName: "Amount",
       sortable: true,
-      cellRenderer: (params) => (
-        <div>
-          <Popover
-            content={content(params?.data.client)}
-            title="Invoice Details"
-            trigger="click"
-          >
-            {<span className="amountDetails">{findamount(params?.data)}</span>}
-          </Popover>
-        </div>
-      ),
+      sort: "asc",
+      sortingOrder: ["asc", "desc"],
     },
   ];
 
@@ -108,31 +100,13 @@ const InvoicesClientDetails = () => {
     resizable: true,
   };
 
-  // const datasource = {
-  //   getRows(params) {
-  //     console.log(JSON.stringify(params.request, null, 1));
-  //     const { sortModel } = params.request;
-  //     let url = "http://localhost:4000/invoices";
+  // let data = tableData
+  //   ?.filter((el) => el.client)
+  //   // .data?.map((el) => el.amount)
+  //   // ?.reduce((a, b) => parseInt(a) + parseInt(b));
 
-  //     //Sorting
-  //     if (sortModel.length) {
-  //       const { colId, sort } = sortModel[0];
-  //       url += `_sort=${colId}&_order=${sort}&`;
-  //     }
-  //   },
-  // };
-
-  const findamount = (params) => {
-    let data = tableData?.filter((el) => el.client === params.client);
-    let temp = data
-      ?.map((el) => el.amount)
-      ?.reduce((a, b) => parseInt(a) + parseInt(b));
-    return temp;
-  };
-
-  const sort = tableData?.sort((a, b) => {
-    return a.amount - b.amount;
-  });
+  let data = tableData?.filter((el) => el.client);
+  // let value = data?.map(e);
 
   const totalSum = tableData
     ?.map((el) => el.amount)
