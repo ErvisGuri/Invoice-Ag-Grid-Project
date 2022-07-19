@@ -17,3 +17,68 @@ function App() {
 }
 
 export default App;
+
+
+
+
+{/* <div>
+  <Popover
+    content={content(params?.data.client)}
+    title="Invoice Details"
+    trigger="click"
+  >
+    {
+      <span className="amountDetails">
+        {valueDisplay(params?.data)}
+      </span>
+    }
+  </Popover>
+</div> */}
+
+
+
+  // const content = (client) => {
+  //   return (
+  //     <div>
+  //       <div
+  //         style={{
+  //           display: "flex",
+  //           flexDirection: "row",
+  //           gap: "250px",
+  //           textDecoration: "underline",
+  //         }}
+  //       >
+  //         <h3 style={{ marginLeft: "5px" }}>ID</h3>
+  //         <h3>Amount</h3>
+  //       </div>
+  //       {tableData
+  //         .filter((e) => e.client === client)
+  //         .map((invoice, key) => (
+  //           <div
+  //             className="detailsRow"
+  //             key={key}
+  //             style={{ display: "flex", flexDirection: "row", gap: "6px" }}
+  //           >
+  //             <div
+  //               style={{
+  //                 display: "flex",
+  //                 flexDirection: "column",
+  //                 marginLeft: "5px",
+  //               }}
+  //             >
+  //               {invoice.id}
+  //             </div>
+  //             <div
+  //               style={{
+  //                 display: "flex",
+  //                 flexDirection: "column",
+  //                 marginLeft: "280px",
+  //               }}
+  //             >
+  //               {invoice.amount}
+  //             </div>
+  //           </div>
+  //         ))}
+  //     </div>
+  //   );
+  // };

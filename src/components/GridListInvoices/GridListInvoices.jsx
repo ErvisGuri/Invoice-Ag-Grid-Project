@@ -32,12 +32,15 @@ const GridListInvoices = ({ setInitialData, showModal }) => {
       .then((resp) => setTableData(resp));
   };
 
-  // const numberFormatter = Intl.NumberFormat("en-US", {
-  //   style: "currency",
-  //   currency: "USD",
-  //   maximumFractionDigits: 0,
-  // });
-  // const myValueFormatter = (p) => numberFormatter.format(p.value);
+  const formatNumber = (number) => {
+    return Math.floor(number)
+      .toString()
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
+
+  const currency = (params) => {
+    return "$" + formatNumber(params.value);
+  };
 
   const columDefs = [
     {
@@ -56,6 +59,8 @@ const GridListInvoices = ({ setInitialData, showModal }) => {
     {
       field: "amount",
       headerName: "Amount",
+      valueFormatter: currency,
+      sortable: true,
     },
     {
       field: "status",
@@ -149,9 +154,11 @@ const GridListInvoices = ({ setInitialData, showModal }) => {
     resizable: true,
   };
 
-  const totalAmount = tableData
-    ?.map((el) => el.amount)
-    .reduce((a, b) => parseInt(a) + parseInt(b));
+  const totalAmount = formatNumber(
+    tableData
+      ?.map((el) => el.amount)
+      .reduce((a, b) => parseInt(a) + parseInt(b))
+  );
 
   return (
     <div
@@ -177,18 +184,20 @@ const GridListInvoices = ({ setInitialData, showModal }) => {
       />
       <div className="totalAmount">
         <div>
-          <span style={{ fontSize: "17px" }}>Total</span>
+          <span style={{ fontSize: "17px", textDecoration: "underline" }}>
+            Total
+          </span>
         </div>
         <div
           style={{
             marginLeft: "1368px",
-            backgroundColor: "green",
+            backgroundColor: "gray",
             padding: "7px",
             borderRadius: "7px",
             fontSize: "17px",
           }}
         >
-          {totalAmount}
+          {`$${totalAmount}`}
         </div>
       </div>
     </div>

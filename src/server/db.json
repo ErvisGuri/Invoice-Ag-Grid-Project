@@ -112,7 +112,7 @@
       "amount": 453
     },
     {
-      "id": 10,
+      "id": 127,
       "number": 20,
       "type": "Fature Shitje nr-1",
       "client": "Alumil",
@@ -120,7 +120,7 @@
       "description": "Krijimi i nje layout Ag-Grid",
       "rate": 112.2,
       "date": "7/12/2022",
-      "amount": 453
+      "amount": 759
     },
     {
       "id": 11,
@@ -263,7 +263,7 @@
       "description": "Krijimi i nje layout Ag-Grid",
       "rate": 112.2,
       "date": "7/12/2022",
-      "amount": 453
+      "amount": 4141
     },
     {
       "id": 11,

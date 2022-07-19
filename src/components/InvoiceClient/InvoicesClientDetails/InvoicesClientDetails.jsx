@@ -1,72 +1,60 @@
-import React, { useContext, useCallback, useState, useEffect } from "react";
+import React, { useContext, useCallback, useState } from "react";
 
 import { AgGridReact } from "ag-grid-react";
 import { Link } from "react-router-dom";
-import { Button, Popover } from "antd";
+import { Button, Modal } from "antd";
+import {
+  GridReadyEvent,
+  GridApi,
+  ColumnApi,
+  ColDef,
+  ICellRendererParams,
+} from "ag-grid-community";
 
 import "./InvoicesClientDetails.css";
 
-// import "ag-grid-enterprise";
 import "../../GridListInvoices/GridListInvoices.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
 import InvoiceContext from "../../../InvoiceContext";
 
+// import AmountDetailsModal from "./AmountDetailsModal";
+import { HelloWorldComp } from "./AmountDetailsModal";
+
 const InvoicesClientDetails = (props) => {
   const { invoiceValue } = useContext(InvoiceContext);
   const [tableData, setTableData] = invoiceValue;
-  const [gridApi, setGridApi] = useState(null);
 
   const idValueGetter = (params) => {
     return params.node ? params.node.rowIndex : null;
   };
 
-  // const content = (client) => {
-  //   return (
-  //     <div>
-  //       <div
-  //         style={{
-  //           display: "flex",
-  //           flexDirection: "row",
-  //           gap: "250px",
-  //           textDecoration: "underline",
-  //         }}
-  //       >
-  //         <h3 style={{ marginLeft: "5px" }}>ID</h3>
-  //         <h3>Amount</h3>
-  //       </div>
-  //       {tableData
-  //         .filter((e) => e.client === client)
-  //         .map((invoice, key) => (
-  //           <div
-  //             className="detailsRow"
-  //             key={key}
-  //             style={{ display: "flex", flexDirection: "row", gap: "6px" }}
-  //           >
-  //             <div
-  //               style={{
-  //                 display: "flex",
-  //                 flexDirection: "column",
-  //                 marginLeft: "5px",
-  //               }}
-  //             >
-  //               {invoice.id}
-  //             </div>
-  //             <div
-  //               style={{
-  //                 display: "flex",
-  //                 flexDirection: "column",
-  //                 marginLeft: "280px",
-  //               }}
-  //             >
-  //               {invoice.amount}
-  //             </div>
-  //           </div>
-  //         ))}
-  //     </div>
-  //   );
-  // };
+  ///calc unique client sum
+  var helper = {};
+  var tableWithSums = tableData?.reduce(function (r, o) {
+    var key = o.client;
+    if (!helper[key]) {
+      helper[key] = Object.assign({}, o); // create a copy of o
+      r.push(helper[key]);
+    } else {
+      helper[key].amount += o.amount;
+    }
+
+    return r;
+  }, []);
+
+  console.log(tableWithSums);
+
+  const formatNumber = (number) => {
+    return Math.floor(number)
+      .toString()
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
+
+  const currency = (params) => {
+    return "$" + formatNumber(params.value);
+  };
 
   const columDefs = [
     {
@@ -78,13 +66,20 @@ const InvoicesClientDetails = (props) => {
       sortable: true,
       sort: "asc",
     },
-    { field: "client", headerName: "Client", filter: true },
+
+    {
+      field: "client",
+      headerName: "Client",
+      filter: true,
+    },
     {
       field: "amount",
       headerName: "Amount",
       sortable: true,
       sort: "asc",
       sortingOrder: ["asc", "desc"],
+      valueFormatter: currency,
+      cellRenderer: HelloWorldComp,
     },
   ];
 
@@ -100,23 +95,13 @@ const InvoicesClientDetails = (props) => {
     resizable: true,
   };
 
-  // let data = tableData
-  //   ?.filter((el) => el.client)
-  //   // .data?.map((el) => el.amount)
-  //   // ?.reduce((a, b) => parseInt(a) + parseInt(b));
+  const totalSum = formatNumber(
+    tableData
+      ?.map((el) => el.amount)
+      .reduce((a, b) => parseInt(a) + parseInt(b))
+  );
 
-  let data = tableData?.filter((el) => el.client);
-  // let value = data?.map(e);
-
-  const totalSum = tableData
-    ?.map((el) => el.amount)
-    .reduce((a, b) => parseInt(a) + parseInt(b));
-
-  const uniqueClient = Array.from(
-    new Set(tableData?.map((a) => a?.client))
-  )?.map((id) => {
-    return tableData?.find((a) => a?.client === id);
-  });
+  console.log(tableWithSums);
 
   return (
     <div>
@@ -153,7 +138,7 @@ const InvoicesClientDetails = (props) => {
       >
         <AgGridReact
           columnDefs={columDefs}
-          rowData={uniqueClient}
+          rowData={tableWithSums}
           defaultColDef={defaultColDef}
           onGridReady={onGridReady}
         />
@@ -174,12 +159,12 @@ const InvoicesClientDetails = (props) => {
           <div
             style={{
               marginLeft: "375px",
-              backgroundColor: "green",
+              backgroundColor: "gray",
               padding: "7px",
               borderRadius: "7px",
             }}
           >
-            {totalSum}
+            {`$${totalSum}`}
           </div>
         </div>
       </div>
