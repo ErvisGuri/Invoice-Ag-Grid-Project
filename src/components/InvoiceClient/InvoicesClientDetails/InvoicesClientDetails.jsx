@@ -2,14 +2,7 @@ import React, { useContext, useCallback, useState } from "react";
 
 import { AgGridReact } from "ag-grid-react";
 import { Link } from "react-router-dom";
-import { Button, Modal } from "antd";
-import {
-  GridReadyEvent,
-  GridApi,
-  ColumnApi,
-  ColDef,
-  ICellRendererParams,
-} from "ag-grid-community";
+import { Button } from "antd";
 
 import "./InvoicesClientDetails.css";
 
@@ -19,15 +12,36 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 
 import InvoiceContext from "../../../InvoiceContext";
 
-// import AmountDetailsModal from "./AmountDetailsModal";
-import { HelloWorldComp } from "./AmountDetailsModal";
+import { AmountDetailsModal } from "./AmountDetailsModal";
 
-const InvoicesClientDetails = (props) => {
+const InvoicesClientDetails = () => {
   const { invoiceValue } = useContext(InvoiceContext);
   const [tableData, setTableData] = invoiceValue;
+  const [visible, setVisible] = useState(false);
+  const [client, setClient] = useState();
 
   const idValueGetter = (params) => {
     return params.node ? params.node.rowIndex : null;
+  };
+
+  const hideModal = () => {
+    setVisible(false);
+  };
+
+  var formatNumber = (number) => {
+    return Math.floor(number)
+      .toString()
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
+
+  const currency = (params) => {
+    return "$" + formatNumber(params.value);
+  };
+
+  const handleCellOnClick = (params) => {
+    var client = params.data.client;
+    setClient(client);
+    setVisible(true);
   };
 
   ///calc unique client sum
@@ -38,23 +52,10 @@ const InvoicesClientDetails = (props) => {
       helper[key] = Object.assign({}, o); // create a copy of o
       r.push(helper[key]);
     } else {
-      helper[key].amount += o.amount;
+      helper[key].amount += parseInt(o.amount);
     }
-
     return r;
   }, []);
-
-  console.log(tableWithSums);
-
-  const formatNumber = (number) => {
-    return Math.floor(number)
-      .toString()
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-  };
-
-  const currency = (params) => {
-    return "$" + formatNumber(params.value);
-  };
 
   const columDefs = [
     {
@@ -71,15 +72,17 @@ const InvoicesClientDetails = (props) => {
       field: "client",
       headerName: "Client",
       filter: true,
+      cellStyle: { borderLeft: "2px gray solid" },
     },
     {
       field: "amount",
       headerName: "Amount",
+      cellStyle: { borderLeft: "2px gray solid" },
       sortable: true,
       sort: "asc",
       sortingOrder: ["asc", "desc"],
       valueFormatter: currency,
-      cellRenderer: HelloWorldComp,
+      onCellClicked: (params) => handleCellOnClick(params),
     },
   ];
 
@@ -101,11 +104,12 @@ const InvoicesClientDetails = (props) => {
       .reduce((a, b) => parseInt(a) + parseInt(b))
   );
 
-  console.log(tableWithSums);
-
   return (
-    <div>
-      <div className="clientDetails_container" style={{ marginTop: "40px" }}>
+    <div
+      className="main_container"
+      style={{ paddingTop: 160, paddingLeft: 560 }}
+    >
+      <div className="clientDetails_container">
         <div>
           <span style={{ fontSize: "25px", marginLeft: "350px" }}>
             Invoices Client Detalis
@@ -168,6 +172,11 @@ const InvoicesClientDetails = (props) => {
           </div>
         </div>
       </div>
+      <AmountDetailsModal
+        client={client}
+        visible={visible}
+        hideModal={hideModal}
+      />
     </div>
   );
 };

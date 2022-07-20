@@ -4,3 +4,7 @@
     border: 1px solid gray;
     border-radius: 7px;
 }
+
+.ag-cell.ag-cell-not-inline-editing.ag-cell-normal-height.ag-cell-value.ag-cell-focus {
+    cursor: pointer;
+}

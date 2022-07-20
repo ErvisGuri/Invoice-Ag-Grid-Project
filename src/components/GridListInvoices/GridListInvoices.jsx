@@ -8,13 +8,14 @@ import "./GridListInvoices.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
+import Api from "../../api/invoicesapi";
+
 import { Modal } from "antd";
 
 //Importing InvoiceContext
 import InvoiceContext from "../../InvoiceContext";
-import { tab } from "@testing-library/user-event/dist/tab";
 
-const GridListInvoices = ({ setInitialData, showModal }) => {
+const GridListInvoices = ({ onChange, setInitialData, showModal, filter }) => {
   const { invoiceValue, invoiceEditValue } = useContext(InvoiceContext);
   const gridRef = useRef();
 
@@ -46,26 +47,62 @@ const GridListInvoices = ({ setInitialData, showModal }) => {
     {
       field: "id",
       headerName: "ID",
+      width: 90,
       checkboxSelection: true,
       headerCheckboxSelection: true,
     },
-    { field: "number", headerName: "Invoice Nr" },
-    { field: "type", headerName: "Type", filter: true },
-    { field: "client", headerName: "Client", filter: true },
+    {
+      field: "number",
+      headerName: "Invoice Nr",
+      width: 120,
+      cellStyle: { borderLeft: "2px gray solid" },
+    },
 
-    { field: "description", headerName: "Description" },
-    { field: "rate", headerName: "Rate" },
-    { field: "date", headerName: "Date" },
+    {
+      field: "type",
+      headerName: "Type",
+      width: 150,
+      filter: true,
+      cellStyle: { borderLeft: "2px gray solid" },
+    },
+    {
+      field: "client",
+      headerName: "Client",
+      filter: true,
+      cellStyle: { borderLeft: "2px gray solid" },
+      width: 100,
+    },
+
+    {
+      field: "description",
+      headerName: "Description",
+      cellStyle: { borderLeft: "2px gray solid" },
+    },
+    {
+      field: "rate",
+      headerName: "Rate",
+      width: 90,
+      cellStyle: { borderLeft: "2px gray solid" },
+    },
+    {
+      field: "date",
+      headerName: "Date",
+      width: 110,
+      cellStyle: { borderLeft: "2px gray solid" },
+    },
     {
       field: "amount",
       headerName: "Amount",
+      width: 130,
       valueFormatter: currency,
       sortable: true,
+      cellStyle: { borderLeft: "2px gray solid" },
     },
     {
       field: "status",
       headerName: "Status",
       filter: true,
+      cellStyle: { borderLeft: "2px gray solid" },
       cellRenderer: (params) => (
         <div
           style={{
@@ -82,6 +119,7 @@ const GridListInvoices = ({ setInitialData, showModal }) => {
     {
       field: "id",
       headerName: "Action",
+      cellStyle: { borderLeft: "2px gray solid" },
       cellRenderer: (params) => (
         <div>
           <Button
@@ -129,9 +167,10 @@ const GridListInvoices = ({ setInitialData, showModal }) => {
   };
 
   const handleUpdate = (invoice) => {
-    setInitialData(invoice);
-    setIsEdit(true);
+    console.log(invoice);
     showModal();
+    setIsEdit(true);
+    setInitialData(invoice);
   };
 
   const handleDelete = (id) => {
@@ -164,14 +203,17 @@ const GridListInvoices = ({ setInitialData, showModal }) => {
     <div
       className="ag-theme-alpine"
       style={{
-        width: 1750,
+        width: 1390,
         height: 600,
-        marginLeft: "105px",
+        marginLeft: "200px",
         marginRight: "70px",
       }}
     >
       <AgGridReact
-        rowData={tableData}
+        rowData={tableData?.filter((e) =>
+          filter !== "" ? e.status === filter : true
+        )}
+        gridRef={gridRef}
         defaultColDef={defaultColDef}
         columnDefs={columDefs}
         rowDragManaged={true}
@@ -190,7 +232,7 @@ const GridListInvoices = ({ setInitialData, showModal }) => {
         </div>
         <div
           style={{
-            marginLeft: "1368px",
+            marginLeft: "825px",
             backgroundColor: "gray",
             padding: "7px",
             borderRadius: "7px",

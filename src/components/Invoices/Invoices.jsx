@@ -3,8 +3,9 @@ import React, { useState, useContext } from "react";
 import GridListInvoices from "../GridListInvoices/GridListInvoices";
 import AddInvoice from "../AddInvoices/AddInvoice";
 import RecordStatus from "../RecordStatus/RecordStatus";
-
+import InvoiceContext from "../../InvoiceContext";
 const Invoices = () => {
+  const { invoiceValue } = useContext(InvoiceContext);
   const initials = {
     number: "",
     type: "",
@@ -18,6 +19,8 @@ const Invoices = () => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [initialData, setInitialData] = useState(initials);
+  const [filter, setFilter] = useState("");
+  const [tableData, setTableData] = invoiceValue;
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -33,7 +36,7 @@ const Invoices = () => {
       style={{ backgroundColor: "rgba(219,219,219,0.767)" }}
     >
       <div>
-        <RecordStatus />
+        <RecordStatus setFilter={setFilter} />
 
         <AddInvoice
           initialData={initialData}
@@ -45,6 +48,7 @@ const Invoices = () => {
         <GridListInvoices
           showModal={showModal}
           setInitialData={setInitialData}
+          filter={filter}
         />
       </div>
     </div>

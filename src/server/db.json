@@ -2,28 +2,26 @@
   "invoices": [
     {
       "id": 3,
-      "number": 20,
-      "type": "Fature Shitje nr-1",
+      "number": "20324",
+      "type": "Fsh pa artikull",
       "client": "GjiroFarm",
       "status": "Paid",
       "description": "Krijimi i nje layout Ag-Grid",
       "rate": 112.2,
-      "date": "7/12/2022",
+      "date": "",
       "amount": 4121
     },
     {
       "id": 4,
       "number": 20,
-      "type": "Fature Shitje nr-1",
-      "client": "GjiroFarm",
+      "type": "Fature Shitje",
+      "client": "Lufra",
       "status": "Pending",
       "description": "Krijimi i nje layout Ag-Grid",
       "rate": 112.2,
-      "date": "7/12/2022",
-      "amount": 124
+      "amount": "112324"
     },
     {
-
       "id": 5,
       "number": 20,
       "type": "Fature Shitje nr-1",
@@ -109,7 +107,7 @@
       "description": "Krijimi i nje layout Ag-Grid",
       "rate": 112.2,
       "date": "7/12/2022",
-      "amount": 453
+      "amount": "1"
     },
     {
       "id": 127,
@@ -286,6 +284,27 @@
       "rate": 112.2,
       "date": "7/12/2022",
       "amount": 453
+    },
+    {
+      "number": "1",
+      "type": "Fature Shitje",
+      "client": "Alumil",
+      "description": "ervis",
+      "status": "Paid",
+      "rate": "123",
+      "date": "2022-06-27T13:27:38.555Z",
+      "amount": "100",
+      "id": 128
+    },
+    {
+      "number": "23",
+      "type": "Fsh me dalje nga mag",
+      "client": "RZB",
+      "description": "hdrhdrhdrhdrhdrh",
+      "status": "Pending",
+      "rate": "213",
+      "amount": "231213",
+      "id": 129
     }
   ]
 }

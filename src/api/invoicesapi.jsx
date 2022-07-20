@@ -1,5 +1,7 @@
 import axios from "axios";
 
-export default axios.create({
+const Api = axios.create({
   baseURL: "http://localhost:4000/invoices",
 });
+
+export default Api;

@@ -1,5 +1,5 @@
 html{
-  background-color: rgba(219, 219, 219, 0.767);
+  background-color: rgba(219, 219, 219, 0.767) !important;
 }
 
 body {
@@ -9,7 +9,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; 
-  background-color: rgba(219, 219, 219, 0.767);
+  background-color: rgba(219, 219, 219, 0.767) !important;
 }
 
 code {

@@ -32,12 +32,6 @@ const AddInvoiceModal = ({
   const { number, description, rate, amount, key } = InvoiceData;
   const { Option } = Select;
 
-  const handleUpdate = () => {
-    console.log("update");
-    setIsEdit(false);
-    showModal();
-  };
-
   return (
     <div>
       <div style={{ display: "flex", flexDirection: "column" }}>
@@ -153,7 +147,7 @@ const AddInvoiceModal = ({
                   <DatePicker
                     id="date"
                     type="date"
-                    onChange={(e) => onChange("date", e)}
+                    onChange={(e) => onChange("date", e.date.name)}
                     key={key}
                     style={{ width: "180px" }}
                   />

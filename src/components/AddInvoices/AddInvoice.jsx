@@ -16,7 +16,6 @@ const AddInvoice = ({
   handleCancel,
   isModalVisible,
 }) => {
-  const { invoiceValue } = useContext(InvoiceContext);
   const [key, setKey] = useState(false);
 
   const isUpdate = initialData.id !== undefined;
@@ -32,6 +31,7 @@ const AddInvoice = ({
     amount: "",
   };
 
+  const { invoiceValue } = useContext(InvoiceContext);
   const [tableData, setTableData] = invoiceValue;
 
   const getInvoices = () => {
@@ -40,10 +40,6 @@ const AddInvoice = ({
       .then((resp) => setTableData(resp));
   };
 
-  const onChange = (obj, e) => {
-    let test = obj;
-    setInitialData((prev) => ({ ...prev, [test]: e }));
-  };
   const handleSubmit = () => {
     if (!isUpdate) {
       fetch(url, {
@@ -75,6 +71,12 @@ const AddInvoice = ({
     setInitialData(initials);
     handleCancel();
   };
+  console.log(isUpdate);
+
+  const onChange = (obj, e) => {
+    let test = obj;
+    setInitialData((prev) => ({ ...prev, [test]: e }));
+  };
 
   useEffect(() => {
     getInvoices();
@@ -91,7 +93,7 @@ const AddInvoice = ({
                 backgroundColor: "rgb(128, 126, 126)",
                 color: "white",
                 borderRadius: "15px",
-                marginLeft: "105px",
+                marginLeft: "200px",
                 marginTop: "20px",
                 marginBottom: "10px",
                 position: "sticky",

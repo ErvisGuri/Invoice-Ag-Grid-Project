@@ -4,19 +4,19 @@ import { useState, useContext, useCallback } from "react";
 
 import InvoiceContext from "../../../InvoiceContext";
 
-export const HelloWorldComp = (p) => {
+export const AmountDetailsModal = ({ visible, client, hideModal }) => {
   const { invoiceValue } = useContext(InvoiceContext);
   const [tableData, setTableData] = invoiceValue;
-  const [visible, setVisible] = useState(false);
   const [amountData, setAmountData] = useState();
-  const [selectedCell, setSelectedCell] = useState();
 
-  const showModal = () => {
-    setVisible(true);
+  const formatNumber = (number) => {
+    return Math.floor(number)
+      .toString()
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   };
 
-  const hideModal = () => {
-    setVisible(false);
+  const currency = (params) => {
+    return "$" + formatNumber(params.value);
   };
 
   const columnDefs = [
@@ -47,6 +47,7 @@ export const HelloWorldComp = (p) => {
       field: "amount",
       headerName: "Amount",
       sortable: true,
+      valueFormatter: currency,
     },
   ];
 
@@ -70,14 +71,11 @@ export const HelloWorldComp = (p) => {
   };
 
   const content = tableData?.filter((obj) => {
-    return obj.client === "Alumil";
+    return obj.client === client;
   });
-
-  console.log(content);
 
   return (
     <>
-      <button onClick={showModal}>efwfwefsdsdsds</button>
       <Modal
         width="650px"
         title="Client Details"
