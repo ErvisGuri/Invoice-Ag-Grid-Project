@@ -23,6 +23,7 @@ export const AmountDetailsModal = ({ visible, client, hideModal }) => {
     {
       field: "id",
       headerName: "ID",
+      width: 100,
       sortable: true,
       sort: "asc",
     },
@@ -30,6 +31,7 @@ export const AmountDetailsModal = ({ visible, client, hideModal }) => {
       field: "status",
       headerName: "Status",
       filter: true,
+      cellStyle: { borderLeft: "2px gray solid" },
       cellRenderer: (params) => (
         <div
           style={{
@@ -47,6 +49,8 @@ export const AmountDetailsModal = ({ visible, client, hideModal }) => {
       field: "amount",
       headerName: "Amount",
       sortable: true,
+      width: 100,
+      cellStyle: { borderLeft: "2px gray solid" },
       valueFormatter: currency,
     },
   ];
@@ -77,8 +81,8 @@ export const AmountDetailsModal = ({ visible, client, hideModal }) => {
   return (
     <>
       <Modal
-        width="650px"
-        title="Client Details"
+        width="470px"
+        title={`${client} Amount Details`}
         visible={visible}
         onOk={hideModal}
         onCancel={hideModal}
@@ -89,7 +93,7 @@ export const AmountDetailsModal = ({ visible, client, hideModal }) => {
         <div
           className="ag-theme-alpine"
           style={{
-            width: 603,
+            width: 420,
             height: 270,
           }}
         >

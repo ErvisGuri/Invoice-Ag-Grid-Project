@@ -1,11 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import GridListInvoices from "../GridListInvoices/GridListInvoices";
 import AddInvoice from "../AddInvoices/AddInvoice";
 import RecordStatus from "../RecordStatus/RecordStatus";
 import InvoiceContext from "../../InvoiceContext";
+
 const Invoices = () => {
-  const { invoiceValue } = useContext(InvoiceContext);
+  const { invoiceEditValue } = useContext(InvoiceContext);
+  const [isEdit, setIsEdit] = invoiceEditValue;
+
   const initials = {
     number: "",
     type: "",
@@ -20,7 +23,6 @@ const Invoices = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [initialData, setInitialData] = useState(initials);
   const [filter, setFilter] = useState("");
-  const [tableData, setTableData] = invoiceValue;
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -28,6 +30,8 @@ const Invoices = () => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setIsEdit();
+    setInitialData(initials);
   };
 
   return (

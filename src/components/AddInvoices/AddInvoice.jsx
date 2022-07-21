@@ -5,9 +5,12 @@ import "../AddInvoices/AddInvoice.css";
 
 import { Link } from "react-router-dom";
 import InvoiceContext from "../../InvoiceContext";
-import { Button } from "antd";
+import { Button, Form } from "antd";
+import moment from "moment";
+import io from "socket.io-client";
 
 const url = "http://localhost:4000/invoices";
+const socket = io.connect("http://localhost:3001");
 
 const AddInvoice = ({
   initialData,
@@ -17,8 +20,40 @@ const AddInvoice = ({
   isModalVisible,
 }) => {
   const [key, setKey] = useState(false);
+  const { invoiceValue } = useContext(InvoiceContext);
+  const [tableData, setTableData] = invoiceValue;
+  const [dataSocket, setDataSocket] = useState("");
+  const recordSocket = tableData?.map((el) => el.id);
 
   const isUpdate = initialData.id !== undefined;
+
+  const Nr = recordSocket?.length + 1;
+
+  /// dataSocket(paid, unpaid, pending)  object nr
+  useEffect(() => {
+    const newRecord = tableData?.map((el) => el.status);
+    const dataSocket = {};
+    newRecord?.forEach((el) => {
+      if (el in dataSocket) {
+        parseInt(dataSocket[el]++);
+      } else {
+        parseInt((dataSocket[el] = 1));
+      }
+    });
+    setDataSocket(dataSocket);
+  }, [tableData]);
+
+  const { Paid, Unpaid, Pending } = dataSocket;
+
+  const sendRecord = () => {
+    socket.emit("send_record", { Nr, Paid, Unpaid, Pending });
+  };
+
+  useEffect(() => {
+    socket.on("receive_record", (data) => {
+      console.log(data);
+    });
+  }, [socket]);
 
   const initials = {
     number: "",
@@ -30,9 +65,6 @@ const AddInvoice = ({
     date: "",
     amount: "",
   };
-
-  const { invoiceValue } = useContext(InvoiceContext);
-  const [tableData, setTableData] = invoiceValue;
 
   const getInvoices = () => {
     fetch(url)
@@ -53,6 +85,7 @@ const AddInvoice = ({
         .then(() => {
           getInvoices();
         });
+      sendRecord();
       setKey((k) => !k);
     } else {
       fetch(url + `/${initialData.id}`, {
@@ -66,14 +99,18 @@ const AddInvoice = ({
         .then(() => {
           getInvoices();
         });
+      sendRecord();
       setKey((k) => !k);
     }
     setInitialData(initials);
     handleCancel();
   };
-  console.log(isUpdate);
 
   const onChange = (obj, e) => {
+    if (obj === "date") {
+      let test = obj;
+      setInitialData((prev) => ({ ...prev, [test]: moment(e).valueOf() }));
+    }
     let test = obj;
     setInitialData((prev) => ({ ...prev, [test]: e }));
   };
@@ -94,8 +131,8 @@ const AddInvoice = ({
                 color: "white",
                 borderRadius: "15px",
                 marginLeft: "200px",
-                marginTop: "20px",
-                marginBottom: "10px",
+                marginTop: "15px",
+                marginBottom: "15px",
                 position: "sticky",
               }}
             >

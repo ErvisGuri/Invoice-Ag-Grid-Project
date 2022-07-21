@@ -1,12 +1,11 @@
 import React, { useContext, useState } from "react";
-import { Select, Input, DatePicker, Modal, Space, Button } from "antd";
+import { Select, Input, DatePicker, Modal, Space, Button, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-
+import Moment from "react-moment";
 import "antd/dist/antd.css";
 
 import InvoiceContext from "../../InvoiceContext";
-import invoiceEditValue from "../../InvoiceContext";
-
+const moment = require("moment");
 const AddInvoiceModal = ({
   InvoiceData,
   onChange,
@@ -15,21 +14,10 @@ const AddInvoiceModal = ({
   isModalVisible,
   handleCancel,
 }) => {
-  const initials = {
-    number: "",
-    type: "",
-    client: "",
-    description: "",
-    status: "",
-    rate: "",
-    date: "",
-    amount: "",
-  };
-
   const { invoiceValue, invoiceEditValue } = useContext(InvoiceContext);
   const [isEdit, setIsEdit] = invoiceEditValue;
-
-  const { number, description, rate, amount, key } = InvoiceData;
+  const { number, description, rate, date, amount, key, client, status, type } =
+    InvoiceData;
   const { Option } = Select;
 
   return (
@@ -41,8 +29,8 @@ const AddInvoiceModal = ({
             backgroundColor: "rgb(128, 126, 126)",
             color: "white",
             borderRadius: "15px",
-            marginTop: "20px",
-            marginBottom: "10px",
+            marginTop: "15px",
+            marginBottom: "15px",
             position: "sticky",
             top: "270px",
           }}
@@ -68,6 +56,7 @@ const AddInvoiceModal = ({
             <div className="Column1">
               <div className="InvoiceNr">
                 <span>Invoice Nr</span>
+
                 <Input
                   id="number"
                   type="number"
@@ -81,6 +70,7 @@ const AddInvoiceModal = ({
                 <span>Type</span>
                 <Select
                   id="type"
+                  value={type}
                   onSelect={(e) => onChange("type", e)}
                   style={{ width: "180px" }}
                 >
@@ -96,6 +86,7 @@ const AddInvoiceModal = ({
                 <span>Client</span>
                 <Select
                   id="client"
+                  value={client}
                   onChange={(e) => onChange("client", e)}
                   placeholder="Choose Client"
                   style={{ width: "180px" }}
@@ -123,6 +114,7 @@ const AddInvoiceModal = ({
                 <span>Status</span>
                 <Select
                   id="status"
+                  value={status}
                   onChange={(e) => onChange("status", e)}
                   style={{ width: "180px" }}
                 >
@@ -147,7 +139,8 @@ const AddInvoiceModal = ({
                   <DatePicker
                     id="date"
                     type="date"
-                    onChange={(e) => onChange("date", e.date.name)}
+                    value={!!date && moment(date)}
+                    onChange={(e) => onChange("date", e)}
                     key={key}
                     style={{ width: "180px" }}
                   />
@@ -166,13 +159,24 @@ const AddInvoiceModal = ({
             </div>
           </div>
           <div className="column3">
-            <Button
-              className="addInvoiceBtn"
-              type="submit"
-              onClick={handleSubmit}
-            >
-              Add Invoice
-            </Button>
+            {isEdit ? (
+              <Button
+                style={{ width: "130px" }}
+                className="addInvoiceBtn"
+                type="submit"
+                onClick={handleSubmit}
+              >
+                Update Invoice
+              </Button>
+            ) : (
+              <Button
+                className="addInvoiceBtn"
+                type="submit"
+                onClick={handleSubmit}
+              >
+                Add Invoice
+              </Button>
+            )}
           </div>
         </div>
       </Modal>

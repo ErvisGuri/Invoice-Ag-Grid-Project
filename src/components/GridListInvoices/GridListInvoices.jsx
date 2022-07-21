@@ -1,21 +1,28 @@
-import React, { useCallback, useContext, useEffect, useRef } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useMemo,
+} from "react";
 
 import { Button } from "antd";
 
 import { AgGridReact } from "ag-grid-react";
 
+import "ag-grid-enterprise";
 import "./GridListInvoices.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-
-import Api from "../../api/invoicesapi";
+import totalAmountStatusBar from "./totalAmountStatusBar";
 
 import { Modal } from "antd";
 
 //Importing InvoiceContext
 import InvoiceContext from "../../InvoiceContext";
+import moment from "moment";
 
-const GridListInvoices = ({ onChange, setInitialData, showModal, filter }) => {
+const GridListInvoices = ({ setInitialData, showModal, filter }) => {
   const { invoiceValue, invoiceEditValue } = useContext(InvoiceContext);
   const gridRef = useRef();
 
@@ -48,8 +55,6 @@ const GridListInvoices = ({ onChange, setInitialData, showModal, filter }) => {
       field: "id",
       headerName: "ID",
       width: 90,
-      checkboxSelection: true,
-      headerCheckboxSelection: true,
     },
     {
       field: "number",
@@ -62,13 +67,13 @@ const GridListInvoices = ({ onChange, setInitialData, showModal, filter }) => {
       field: "type",
       headerName: "Type",
       width: 150,
-      filter: true,
       cellStyle: { borderLeft: "2px gray solid" },
     },
     {
       field: "client",
       headerName: "Client",
-      filter: true,
+      // rowGroup: true,
+      // hide: true,
       cellStyle: { borderLeft: "2px gray solid" },
       width: 100,
     },
@@ -87,6 +92,7 @@ const GridListInvoices = ({ onChange, setInitialData, showModal, filter }) => {
     {
       field: "date",
       headerName: "Date",
+      valueGetter: (params) => moment(params.data.date).format("DD/MM/YYYY"),
       width: 110,
       cellStyle: { borderLeft: "2px gray solid" },
     },
@@ -101,7 +107,8 @@ const GridListInvoices = ({ onChange, setInitialData, showModal, filter }) => {
     {
       field: "status",
       headerName: "Status",
-      filter: true,
+      // rowGroup: true,
+      // hide: true,
       cellStyle: { borderLeft: "2px gray solid" },
       cellRenderer: (params) => (
         <div
@@ -123,7 +130,9 @@ const GridListInvoices = ({ onChange, setInitialData, showModal, filter }) => {
       cellRenderer: (params) => (
         <div>
           <Button
-            onClick={() => handleUpdate(params.data)}
+            onClick={() => {
+              handleUpdate(params.data);
+            }}
             style={{
               backgroundColor: "rgb(230, 224, 224)",
               borderRadius: "6px",
@@ -167,7 +176,7 @@ const GridListInvoices = ({ onChange, setInitialData, showModal, filter }) => {
   };
 
   const handleUpdate = (invoice) => {
-    console.log(invoice);
+    console.log("invoiceData", invoice);
     showModal();
     setIsEdit(true);
     setInitialData(invoice);
@@ -199,11 +208,37 @@ const GridListInvoices = ({ onChange, setInitialData, showModal, filter }) => {
       .reduce((a, b) => parseInt(a) + parseInt(b))
   );
 
+  const autoGroupColumnDef = useMemo(() => {
+    return {
+      minWidth: 100,
+    };
+  }, []);
+
+  const statusBar = useMemo(() => {
+    return {
+      statusPanels: [
+        { statusPanel: "agTotalAndFilteredRowCountComponent", align: "left" },
+        { statusPanel: totalAmountStatusBar, align: "center" },
+        { statusPanel: "agFilteredRowCountComponent" },
+        { statusPanel: "agSelectedRowCountComponent" },
+        { statusPanel: "agAggregationComponent" },
+      ],
+    };
+  }, []);
+
+  const onFirstDataRendered = useCallback((event) => {
+    event.api.addCellRange({
+      rowStartIndex: 2,
+      rowEndIndex: 6,
+      columns: ["amount"],
+    });
+  }, []);
+
   return (
     <div
       className="ag-theme-alpine"
       style={{
-        width: 1390,
+        width: 1423,
         height: 600,
         marginLeft: "200px",
         marginRight: "70px",
@@ -217,31 +252,17 @@ const GridListInvoices = ({ onChange, setInitialData, showModal, filter }) => {
         defaultColDef={defaultColDef}
         columnDefs={columDefs}
         rowDragManaged={true}
+        statusBar={statusBar}
         rowSelection="multiple"
+        autoGroupColumnDef={autoGroupColumnDef}
         animateRows={true}
+        enableRangeSelection={true}
         pagination={true}
         paginationPageSize={10}
-        sideBar={"columns"}
+        sideBar={true}
         onGridReady={onGridReady}
+        onFirstDataRendered={onFirstDataRendered}
       />
-      <div className="totalAmount">
-        <div>
-          <span style={{ fontSize: "17px", textDecoration: "underline" }}>
-            Total
-          </span>
-        </div>
-        <div
-          style={{
-            marginLeft: "825px",
-            backgroundColor: "gray",
-            padding: "7px",
-            borderRadius: "7px",
-            fontSize: "17px",
-          }}
-        >
-          {`$${totalAmount}`}
-        </div>
-      </div>
     </div>
   );
 };

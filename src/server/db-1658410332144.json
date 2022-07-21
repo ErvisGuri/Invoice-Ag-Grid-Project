@@ -277,13 +277,13 @@
     },
     {
       "number": "123",
-      "type": "Fsh me dalje nga mag",
-      "client": "TiranaBank",
-      "description": "gsgsegsegsegsewegwegwegwgwegewg",
-      "status": "Unpaid",
-      "rate": "111",
-      "date": "2022-06-27T18:48:22.205Z",
-      "amount": "121",
+      "type": "Fsh pa artikull",
+      "client": "RZB",
+      "description": "gsgsegsegsegse",
+      "status": "Pending",
+      "rate": "231",
+      "date": "2022-07-26T12:24:49.473Z",
+      "amount": "1231",
       "id": 129
     }
   ]

@@ -28,26 +28,30 @@ const RecordStatus = ({ setFilter }) => {
   }, [tableData]);
 
   return (
-    <div className="recordStatus_container">
-      <div className="recordNew" onClick={() => handleOnClick("")}>
-        <span className="recordNumb">{newRecord?.length}</span>
-        <span className="recordStatus">New Record</span>
-      </div>
-      <div className="recordPending" onClick={() => handleOnClick("Pending")}>
-        <span className="recordNumb">
-          {panelData ? panelData["Pending"] : ""}
-        </span>
-        <span className="recordStatus">Pending</span>
-      </div>
-      <div className="recordPaid" onClick={() => handleOnClick("Paid")}>
-        <span className="recordNumb">{panelData ? panelData["Paid"] : ""}</span>
-        <span className="recordStatus">Paid</span>
-      </div>
-      <div className="recordUnpaid" onClick={() => handleOnClick("Unpaid")}>
-        <span className="recordNumb">
-          {panelData ? panelData["Unpaid"] : ""}
-        </span>
-        <span className="recordStatus">Unpaid</span>
+    <div>
+      <div className="recordStatus_container">
+        <div className="recordNew" onClick={() => handleOnClick("")}>
+          <span className="recordNumb">{newRecord?.length}</span>
+          <span className="recordStatus">Total Record</span>
+        </div>
+        <div className="recordPending" onClick={() => handleOnClick("Pending")}>
+          <span className="recordNumb">
+            {panelData ? panelData["Pending"] : ""}
+          </span>
+          <span className="recordStatus">Pending</span>
+        </div>
+        <div className="recordPaid" onClick={() => handleOnClick("Paid")}>
+          <span className="recordNumb">
+            {panelData ? panelData["Paid"] : ""}
+          </span>
+          <span className="recordStatus">Paid</span>
+        </div>
+        <div className="recordUnpaid" onClick={() => handleOnClick("Unpaid")}>
+          <span className="recordNumb">
+            {panelData ? panelData["Unpaid"] : ""}
+          </span>
+          <span className="recordStatus">Unpaid</span>
+        </div>
       </div>
     </div>
   );

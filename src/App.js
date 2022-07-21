@@ -1,10 +1,17 @@
 import Invoices from './components/Invoices/Invoices.jsx';
 import { Routes, Route } from 'react-router-dom';
 import InvoiceClient from './components/InvoiceClient/InvoiceClient.jsx';
+import { useEffect } from 'react';
+import { io } from 'socket.io-client';
 
-
+const socket = io.connect("http://localhost:3001");
 
 function App() {
+
+  useEffect(() => {
+    socket.emit("join_message")
+  }, [])
+
   return (
 
     <div className="App">

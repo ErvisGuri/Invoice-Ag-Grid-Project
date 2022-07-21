@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useState } from "react";
+import React, { useContext, useCallback, useState, useMemo } from "react";
 
 import { AgGridReact } from "ag-grid-react";
 import { Link } from "react-router-dom";
@@ -9,6 +9,8 @@ import "./InvoicesClientDetails.css";
 import "../../GridListInvoices/GridListInvoices.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
+
+import totalAmountStatusBar from "../../GridListInvoices/totalAmountStatusBar";
 
 import InvoiceContext from "../../../InvoiceContext";
 
@@ -98,11 +100,17 @@ const InvoicesClientDetails = () => {
     resizable: true,
   };
 
-  const totalSum = formatNumber(
-    tableData
-      ?.map((el) => el.amount)
-      .reduce((a, b) => parseInt(a) + parseInt(b))
-  );
+  const statusBar = useMemo(() => {
+    return {
+      statusPanels: [
+        { statusPanel: "agTotalAndFilteredRowCountComponent", align: "left" },
+        { statusPanel: totalAmountStatusBar, align: "right" },
+        { statusPanel: "agFilteredRowCountComponent" },
+        { statusPanel: "agSelectedRowCountComponent" },
+        { statusPanel: "agAggregationComponent" },
+      ],
+    };
+  }, []);
 
   return (
     <div
@@ -112,7 +120,7 @@ const InvoicesClientDetails = () => {
       <div className="clientDetails_container">
         <div>
           <span style={{ fontSize: "25px", marginLeft: "350px" }}>
-            Invoices Client Detalis
+            Invoices Client Details
           </span>
         </div>
         <Link to="/">
@@ -135,7 +143,7 @@ const InvoicesClientDetails = () => {
         className="ag-theme-alpine"
         style={{
           width: 603,
-          height: 270,
+          height: 305,
           marginLeft: "105px",
           marginRight: "70px",
         }}
@@ -144,32 +152,11 @@ const InvoicesClientDetails = () => {
           columnDefs={columDefs}
           rowData={tableWithSums}
           defaultColDef={defaultColDef}
+          statusBar={statusBar}
           onGridReady={onGridReady}
         />
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            marginTop: "5px",
-            marginLeft: "2px",
-            fontSize: "17px",
-          }}
-        >
-          <div>
-            <span style={{ marginLeft: "5px", textDecoration: "underline" }}>
-              Total
-            </span>
-          </div>
-          <div
-            style={{
-              marginLeft: "375px",
-              backgroundColor: "gray",
-              padding: "7px",
-              borderRadius: "7px",
-            }}
-          >
-            {`$${totalSum}`}
-          </div>
+        <div>
+          <totalAmountStatusBar />
         </div>
       </div>
       <AmountDetailsModal
