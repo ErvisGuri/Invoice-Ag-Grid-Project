@@ -3,6 +3,10 @@ import React, { useContext, useState, useEffect } from "react";
 import "./RecordStatus.css";
 
 import InvoiceContext from "../../InvoiceContext";
+import io from "socket.io-client";
+
+const url = "http://localhost:4000/invoices";
+const socket = io.connect("http://localhost:3001");
 
 const RecordStatus = ({ setFilter }) => {
   const { invoiceValue } = useContext(InvoiceContext);
@@ -26,6 +30,18 @@ const RecordStatus = ({ setFilter }) => {
     });
     setPanelData(panelData);
   }, [tableData]);
+
+  const getInvoices = () => {
+    fetch(url)
+      .then((resp) => resp.json())
+      .then((resp) => setTableData(resp));
+  };
+
+  useEffect(() => {
+    socket.on("receive_record", () => {
+      getInvoices();
+    });
+  });
 
   return (
     <div>

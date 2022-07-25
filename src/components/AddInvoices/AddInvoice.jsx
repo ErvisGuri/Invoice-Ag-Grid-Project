@@ -45,15 +45,15 @@ const AddInvoice = ({
 
   const { Paid, Unpaid, Pending } = dataSocket;
 
-  const sendRecord = () => {
-    socket.emit("send_record", { Nr, Paid, Unpaid, Pending });
+  const sendRecord = (data) => {
+    socket.emit("send_record", data);
   };
 
-  useEffect(() => {
-    socket.on("receive_record", (data) => {
-      console.log(data);
-    });
-  }, [socket]);
+  // useEffect(() => {
+  //     socket.on("receive_record", (data) => {
+  //         console.log(data);
+  //     });
+  // }, [socket]);
 
   const initials = {
     number: "",
@@ -85,7 +85,7 @@ const AddInvoice = ({
         .then(() => {
           getInvoices();
         });
-      sendRecord();
+      sendRecord(tableData);
       setKey((k) => !k);
     } else {
       fetch(url + `/${initialData.id}`, {
@@ -99,7 +99,7 @@ const AddInvoice = ({
         .then(() => {
           getInvoices();
         });
-      sendRecord();
+      sendRecord(tableData);
       setKey((k) => !k);
     }
     setInitialData(initials);

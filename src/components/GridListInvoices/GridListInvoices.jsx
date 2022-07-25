@@ -21,6 +21,9 @@ import { Modal } from "antd";
 //Importing InvoiceContext
 import InvoiceContext from "../../InvoiceContext";
 import moment from "moment";
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:3001");
 
 const GridListInvoices = ({ setInitialData, showModal, filter }) => {
   const { invoiceValue, invoiceEditValue } = useContext(InvoiceContext);
@@ -38,6 +41,9 @@ const GridListInvoices = ({ setInitialData, showModal, filter }) => {
     fetch(url)
       .then((resp) => resp.json())
       .then((resp) => setTableData(resp));
+  };
+  const sendRecord = (data) => {
+    socket.emit("send_record", data);
   };
 
   const formatNumber = (number) => {
@@ -193,6 +199,8 @@ const GridListInvoices = ({ setInitialData, showModal, filter }) => {
       })
         .then((resp) => resp.json())
         .then((res) => getInvoices());
+
+      sendRecord(tableData);
     }
   };
 

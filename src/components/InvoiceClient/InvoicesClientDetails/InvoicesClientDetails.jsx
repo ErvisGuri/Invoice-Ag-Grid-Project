@@ -120,13 +120,13 @@ const InvoicesClientDetails = () => {
       <div className="clientDetails_container">
         <div>
           <span style={{ fontSize: "25px", marginLeft: "350px" }}>
-            Invoices Client Details
+            Invoice Client Details
           </span>
         </div>
         <Link to="/">
           <Button
             style={{
-              width: "180px",
+              width: "150px",
               backgroundColor: "rgb(128, 126, 126)",
               color: "white",
               borderRadius: "15px",
@@ -135,7 +135,7 @@ const InvoicesClientDetails = () => {
               position: "sticky",
             }}
           >
-            Invoices Client Details
+            Invoice Details
           </Button>
         </Link>
       </div>
